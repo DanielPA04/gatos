@@ -1,0 +1,49 @@
+@if (data.id){
+<h2 mat-dialog-title>{{ data.name }}</h2>
+
+<mat-dialog-content>
+  <p><strong>Origin:</strong> {{ data.origin }} ({{ data.country_code }})</p>
+  <p><strong>Temperament:</strong> {{ data.temperament }}</p>
+  <p><strong>Life Span:</strong> {{ data.life_span }} years</p>
+  <p><strong>Description:</strong> {{ data.description }}</p>
+
+  @if (data.wikipedia_url || data.cfa_url || data.vetstreet_url ||
+  data.vcahospitals_url){
+  <div>
+    <p><strong>More Info:</strong></p>
+    <ul>
+      @if (data.wikipedia_url) {
+      <li><a [href]="data.wikipedia_url" target="_blank">Wikipedia</a></li>
+      } @if (data.cfa_url) {
+      <li><a [href]="data.cfa_url" target="_blank">CFA</a></li>
+      } @if (data.vetstreet_url) {
+      <li><a [href]="data.vetstreet_url" target="_blank">Vetstreet</a></li>
+      } @if (data.vcahospitals_url) {
+      <li>
+        <a [href]="data.vcahospitals_url" target="_blank">VCA Hospitals</a>
+      </li>
+      }
+    </ul>
+  </div>
+  }
+
+  <mat-divider></mat-divider>
+
+  <p><strong>Characteristics:</strong></p>
+  <ul>
+    <li>Affection Level: {{ data.affection_level }}/5</li>
+    <li>Energy Level: {{ data.energy_level }}/5</li>
+    <li>Intelligence: {{ data.intelligence }}/5</li>
+    <li>Grooming Needs: {{ data.grooming }}/5</li>
+    <li>Shedding Level: {{ data.shedding_level }}/5</li>
+    <li>Dog Friendly: {{ data.dog_friendly }}/5</li>
+    <li>Child Friendly: {{ data.child_friendly }}/5</li>
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCloseClick()">Close</button>
+</mat-dialog-actions>
+} @else {
+  <p style="margin: 50px; display: flex; justify-content: center;">ERROR</p>
+}

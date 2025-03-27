@@ -1,0 +1,19 @@
+mat-card-title-group {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#container-card {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 80%;
+}
+
+mat-grid-tile mat-button-toggle-group {
+  max-width: fit-content;
+}
+
+.mat-mdc-card-header {
+  padding: 16px;
+}

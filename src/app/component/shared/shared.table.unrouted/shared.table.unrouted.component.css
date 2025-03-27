@@ -1,0 +1,7 @@
+form{
+    display: flex;
+    justify-content: space-around;
+    h3{
+        width:  200px;
+    }
+}

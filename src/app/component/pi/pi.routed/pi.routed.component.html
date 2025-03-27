@@ -1,0 +1,36 @@
+
+<section>
+  <h2>Numero PI <i class="bi bi-calculator"></i></h2>
+<form [formGroup]="piForm" (ngSubmit)="changeDecimalNumber()">
+  <mat-form-field>
+    <mat-label>Num decimales</mat-label>
+    <input
+      matInput
+      type="number"
+      formControlName="num"
+      placeholder="Numero de decimales"
+      min="0"
+      max="15"
+      value="10"
+    />
+    <mat-hint>Numero del 0 al 15</mat-hint>
+    @if (piForm.get('num')?.hasError('required')){
+    <mat-error> El campo num es obligatorio </mat-error>
+    } @if (piForm.get('num')?.hasError('pattern')){
+    <mat-error>
+      El numero debe ser uno entre el 0 y el 15
+    </mat-error>
+    }
+  </mat-form-field>
+
+  <br />
+  <br />
+  <br />
+
+  <button mat-stroked-button type="submit">Aplicar</button>
+</form>
+
+
+
+<p>{{ pi | number : strPipe }}</p>
+</section>

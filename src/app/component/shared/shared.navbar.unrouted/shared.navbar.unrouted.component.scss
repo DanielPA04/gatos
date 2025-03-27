@@ -1,0 +1,75 @@
+@use "@angular/material" as mat;
+
+$my-theme: mat.define-theme(
+  (
+    color: (
+      primary: mat.$magenta-palette,
+    ),
+  )
+);
+
+header {
+  background: var(--mat-sys-surface);
+  position: sticky;
+  top: 0; 
+  z-index: 1;
+  a {
+    font-weight: 500;
+    &:active,
+    &:link {
+      text-decoration: none;
+    }
+
+    &:visited{
+      color: black;
+    }
+
+    &:hover {
+      color: rgb(207, 200, 200);
+    }
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  padding: 10px;
+}
+
+.active {
+  color: white !important;
+  background-color: black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+h1 {
+  padding: 0 1rem;
+  color: black;
+}
+
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.menu-item{
+  &:hover{
+    color: black !important;
+  }
+}
+
+

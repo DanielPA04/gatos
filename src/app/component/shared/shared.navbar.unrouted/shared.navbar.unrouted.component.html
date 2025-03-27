@@ -1,0 +1,63 @@
+<header>
+  <div class="container">
+    <a
+      routerLink="/home"
+      [@rotateElement]="rotationState"
+      (click)="toggleRotation()"
+      ><h1>Gatos</h1></a
+    >
+    <div class="links">
+      <a
+        routerLink="/home"
+        [class.active]="rutaStr === '/home' || rutaStr === '/'"
+        >Home</a
+      >
+
+      <button style="color: black" mat-button [matMenuTriggerFor]="menu">
+        Menu
+      </button>
+      <mat-menu #menu="matMenu">
+        <a
+          class="menu-item"
+          mat-menu-item
+          routerLink="/random"
+          [class.active]="rutaStr.startsWith('/random')"
+          >Ir a random</a
+        >
+        <a
+          class="menu-item"
+          mat-menu-item
+          routerLink="/breeds"
+          [class.active]="rutaStr.startsWith('/breeds')"
+          >Ir a breeds</a
+        >
+      </mat-menu>
+      <a routerLink="/pi" [class.active]="rutaStr.startsWith('/pi')">PI</a>
+    </div>
+    <a
+      style="margin-right: 40px"
+      href="https://www.amazon.es"
+      target="_blank"
+      matTooltip="Amazon"
+    >
+      <i class="bi bi-amazon"></i>
+    </a>
+  </div>
+</header>
+
+<!--
+    <div>
+        <mat-sidenav-container class="example-container">
+          <mat-sidenav #sidenav mode="over" [(opened)]="opened">
+            Sidenav content
+          </mat-sidenav>
+    
+          <mat-sidenav-content>
+            <p>
+              <button mat-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+              </button>
+            </p>
+          </mat-sidenav-content>
+        </mat-sidenav-container>
+      </div>-->
