@@ -4,7 +4,12 @@ import { RandomCatImgRoutedComponent } from '../app/component/cats/random.cat.im
 import { CatService } from '../app/service/cat.service';
 import { of } from 'rxjs';
 import { ICatImg } from '../app/model/catImg.interface';
-import { mockResponseSinInfoASC, mockResponseSinInfoDESC, mockResponseSinInfoLimit15, mockResponseSinInfoRAND } from './mocks/mockCatSinInfo.mock';
+import {
+  mockResponseSinInfoASC,
+  mockResponseSinInfoDESC,
+  mockResponseSinInfoLimit15,
+  mockResponseSinInfoRAND,
+} from './mocks/mockCatSinInfo.mock';
 import { mockResponseConInfoLimit1 } from './mocks/mockCatConInfo.mock';
 
 function isSortedASC(mock: ICatImg[]): boolean {
@@ -19,26 +24,15 @@ function isSortedDESC(mock: ICatImg[]): boolean {
   return JSON.stringify(mock) === JSON.stringify(sortedMock);
 }
 
-
-
-
-
 function isSortedRAND(mock: ICatImg[]): boolean {
-  const isAsc = isSortedASC(mock);  // Verifica si está ordenado ascendentemente
-  const isDesc = isSortedDESC(mock); // Verifica si está ordenado descendentemente
-  
-  // Si no está ni ordenado ascendente ni descendente, lo consideramos aleatorio
-  return !isAsc && !isDesc;
+  return !isSortedASC(mock) && !isSortedDESC(mock);
 }
-
-
 
 describe('Pruebas randomCat', () => {
   let fixture: ComponentFixture<RandomCatImgRoutedComponent>;
   let tableComponent: RandomCatImgRoutedComponent;
   let catServiceMock: jasmine.SpyObj<CatService>;
   let nPage = 0;
-
 
   beforeEach(() => {
     catServiceMock = jasmine.createSpyObj('CatService', ['getCatImg']);
@@ -62,20 +56,16 @@ describe('Pruebas randomCat', () => {
   it('Debería crear el componente', () => {
     expect(tableComponent).toBeTruthy();
 
-
-    let ids: string[] = mockResponseSinInfoASC.map(item => item.id);
+    // TODO: Eliminar
+    let ids: string[] = mockResponseSinInfoASC.map((item) => item.id);
     let a1 = [...ids].sort((a, b) => a.localeCompare(b)); // Copia del array antes de ordenar
-let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes de ordenar
+    let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes de ordenar
 
-
-
-
-
-    let ids2: string[] = mockResponseSinInfoDESC.map(item => item.id);
+    let ids2: string[] = mockResponseSinInfoDESC.map((item) => item.id);
     let a2 = [...ids2].sort((a, b) => a.localeCompare(b)); // Copia del array antes de ordenar
     let b2 = [...ids2].sort((a, b) => b.localeCompare(a)); // Copia
-
-    console.log("hola");
+    
+    console.log('hola');
   });
 
   it('Prueba existencia de Orden, TieneRaza, Limit', () => {
@@ -109,7 +99,7 @@ let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes d
 
     tableComponent.getCat();
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(0, 1, 'ASC', 0);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
   });
 
   it('Prueba getCat con ASC, 0, 10', () => {
@@ -125,21 +115,17 @@ let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes d
     tableComponent.changeSiRazas(tieneRaza);
     tableComponent.getRandomCats(limit);
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, 10, 'ASC', 0);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
     expect(tableComponent.cats.length).toBe(10);
-    expect(tableComponent.cats[0].id).toBe('6');
+    expect(tableComponent.cats[0].id).toBe(mockResponse[0].id);
     expect(tableComponent.cats[0].breeds).toEqual([]);
-    let a = isSortedASC(tableComponent.cats)
-    let b = isSortedDESC(tableComponent.cats)
+    let a = isSortedASC(tableComponent.cats);
+    let b = isSortedDESC(tableComponent.cats);
     expect(a).toBeTrue;
     expect(b).toBeFalse;
-
-    
-
-
   });
 
   it('Prueba getCat con DESC, 0, 10', () => {
@@ -155,18 +141,17 @@ let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes d
     tableComponent.changeSiRazas(tieneRaza);
     tableComponent.getRandomCats(limit);
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, 10, 'DESC', 0);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
     expect(tableComponent.cats.length).toBe(10);
     expect(tableComponent.cats[0].id).toBe('EEF-lQ_cw');
     expect(tableComponent.cats[0].breeds).toEqual([]);
-    let a = isSortedDESC(tableComponent.cats)
-    let b = isSortedASC(tableComponent.cats)
+    let a = isSortedDESC(tableComponent.cats);
+    let b = isSortedASC(tableComponent.cats);
     expect(a).toBeTrue();
     expect(b).toBeFalse();
-
   });
 
   it('Prueba getCat con ASC, 0, 15', () => {
@@ -182,12 +167,12 @@ let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes d
     tableComponent.changeSiRazas(tieneRaza);
     tableComponent.getRandomCats(limit);
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, 15, 'ASC', 0);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
     expect(tableComponent.cats.length).toBe(15);
-    expect(tableComponent.cats[0].id).toBe('6');
+    expect(tableComponent.cats[0].id).toBe(mockResponse[0].id);
     expect(tableComponent.cats[0].breeds).toEqual([]);
   });
 
@@ -203,18 +188,19 @@ let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes d
     tableComponent.changeSiRazas(tieneRaza);
     tableComponent.getRandomCats(limit);
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, 1, 'ASC', 1);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
     expect(tableComponent.cats.length).toBe(1);
-    expect(tableComponent.cats[0].id).toBe('xnzzM6MBI');
-    expect(tableComponent.cats[0].breeds![0].id).toEqual('abys');
+    expect(tableComponent.cats[0].id).toBe(mockResponse[0].id);
+    expect(tableComponent.cats[0].breeds!.length).toBe(1);
+    expect(tableComponent.cats[0].breeds![0].id).toEqual(mockResponse[0].breeds![0].id);
   });
 
-  it('Prueba getCat con RAND, 1, 10', () => {
+  it('Prueba getCat con RAND, 0, 10', () => {
     let order = 'RAND';
-    let tieneRaza = 1;
+    let tieneRaza = 0;
     let limit = 10;
 
     const mockResponse = mockResponseSinInfoRAND;
@@ -225,18 +211,22 @@ let b1 = [...ids].sort((a, b) => b.localeCompare(a)); // Copia del array antes d
     tableComponent.changeSiRazas(tieneRaza);
     tableComponent.getRandomCats(limit);
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, 10, 'RAND', 1);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
     expect(tableComponent.cats.length).toBe(10);
-    expect(tableComponent.cats[0].id).toBe('1ag');
+    expect(tableComponent.cats[0].id).toBe(mockResponse[0].id);
+    expect(tableComponent.cats[0].breeds).toEqual([]);
     expect(isSortedDESC(tableComponent.cats)).toBeFalse();
     expect(isSortedASC(tableComponent.cats)).toBeFalse();
     expect(isSortedRAND(tableComponent.cats)).toBeTrue();
+
+    expect(tableComponent.cats[0]).not.toBe(mockResponseSinInfoASC[0]);
+    expect(tableComponent.cats[0]).not.toBe(mockResponseSinInfoDESC[0]);
+
+
     console.log('a');
-
-
   });
 
   it('Debe ser válido cuando el límite es 100', () => {

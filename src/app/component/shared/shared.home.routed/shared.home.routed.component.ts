@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-shared.home.routed',
   templateUrl: './shared.home.routed.component.html',
-  styleUrls: ['./shared.home.routed.component.css']
+  styleUrls: ['./shared.home.routed.component.css'],
+  standalone: true,
 })
 export class SharedHomeRoutedComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

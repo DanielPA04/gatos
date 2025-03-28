@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { SharedTableUnroutedComponent } from '../app/component/shared/shared.table.unrouted/shared.table.unrouted.component';
 import { provideHttpClient } from '@angular/common/http';
 import { CatService } from '../app/service/cat.service';
@@ -9,7 +14,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 describe('Pruebas de Table Breeds', () => {
   let fixture: ComponentFixture<SharedTableUnroutedComponent>;
   let tableComponent: SharedTableUnroutedComponent;
-  let dialog: MatDialog; 
+  let dialog: MatDialog;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,12 +44,17 @@ describe('Pruebas de Table Breeds', () => {
   });
 
   it('Debería abrir el diálogo correctamente', () => {
-    spyOn(dialog, 'open').and.callThrough();  
+    spyOn(dialog, 'open').and.callThrough();
 
-    tableComponent.openDialog();  
+    tableComponent.openDialog();
 
-    expect(dialog.open).toHaveBeenCalled();  
+    expect(dialog.open).toHaveBeenCalled();
   });
+
+  it('Debería dar timeout', fakeAsync(() => {
+    tableComponent.isLoading = true;
+    tableComponent.ngOnInit();
+    tick(7000);
+    expect(tableComponent.isLoading).toBeFalse();
+  }));
 });
-
-
