@@ -1,121 +1,101 @@
-<mat-grid-list cols="2" rowHeight="80%">
-  <mat-grid-tile>
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <p>Orden de los gatos:</p>
-      <!--  <button
-        mat-stroked-button
-        (click)="changeOrder('ASC')"
-        [disabled]="order === 'ASC'"
-      >
-        ASC
-      </button>
-      <button mat-stroked-button [disabled]="order === 'DESC'">DESC</button>
-      <button
-        mat-stroked-button
-        (click)="changeOrder('RAND')"
-        [disabled]="order === 'RAND'"
-      >
-        RAND
-      </button> -->
+<div class="grid-container">
+  <!-- Columna izquierda: Controles -->
+  <div class="controls-column">
+    <p>Orden de los gatos:</p>
+    <div class="card flex justify-center">
+      <p-selectbutton
+        [options]="stateOptions"
+        [(ngModel)]="order"
+        optionLabel="label"
+        optionValue="value"
+        aria-labelledby="basic"
+      />
+    </div>
 
-      <mat-button-toggle-group
-        name="fontStyle"
-        aria-label="Font Style"
-        value = "RAND"
-      >
-        <mat-button-toggle (click)="changeOrder('ASC')">
-          ASC
-        </mat-button-toggle>
-        <mat-button-toggle (click)="changeOrder('DESC')">
-          DESC
-        </mat-button-toggle>
-        <mat-button-toggle (click)="changeOrder('RAND')" value="RAND">
-          RAND
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-
-      <p>Quieres informacion de las razas?</p>
-      <button
-        mat-stroked-button
+    <p>¿Quieres información de las razas?</p>
+    <div class="card flex justify-center gap-2">
+      <p-button
+        label="Si"
         (click)="changeSiRazas(1)"
         [disabled]="tieneRaza === 1"
-      >
-        Si
-      </button>
-      <button
-        style="margin-bottom: 20px"
-        mat-stroked-button
+      />
+      <p-button
+        label="No"
         (click)="changeSiRazas(0)"
         [disabled]="tieneRaza === 0"
-      >
-        No
-      </button>
+      />
+    </div>
 
-      <p>Numero de gatos que quieres:</p>
-      <form [formGroup]="catForm" (ngSubmit)="onSubmit()" style="display: flex; flex-direction: column; align-items: center;">
-        <mat-form-field>
-          <mat-label>Limit</mat-label>
-          <input
-            matInput
-            type="number"
+    <div class="card flex justify-center">
+      <form [formGroup]="catForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-col">
+          <label for="integeronly" class="mb-2"
+            >Número de gatos que quieres:</label
+          >
+          <p-inputnumber
+            inputId="integeronly"
             formControlName="limit"
-            placeholder="Cuantos gatos quiere"
-            min="1"
-            max="100"
-            value="10"
-          />
-          <mat-hint>Numero del 1 al 100</mat-hint>
-          @if (catForm.get('limit')?.hasError('required')){
-          <mat-error> El campo limit es obligatorio </mat-error>
-          } @if (catForm.get('limit')?.hasError('pattern')){
-          <mat-error>
-            El limit debe ser un numero entre el 1 y el 100
-          </mat-error>
+            pTooltip="Ingresa un número entre 1 y 100"
+            tooltipPosition="right"
+            class="w-full"
+          ></p-inputnumber>
+          @if(catForm.get('limit')?.hasError('required')){
+            <p-message
+            class=""
+            severity="error"
+            text="El campo es obligatorio"
+          ></p-message>
           }
-        </mat-form-field>
-
-        <br />
-        <br />
-        <br />
-
-        <button mat-stroked-button type="submit" [disabled]="!this.catForm.valid">Enviar</button>
+          @else if(catForm.get('limit')?.invalid) {
+          <p-message
+            class=""
+            severity="error"
+            text="El campo debe ser un numero entre 1 y 100"
+          ></p-message
+          >}
+        </div>
+        <p-button
+          label="Enviar"
+          type="submit"
+          [disabled]="!catForm.valid"
+        ></p-button>
       </form>
     </div>
-  </mat-grid-tile>
-  <mat-grid-tile style="color: black">
+  </div>
 
-    @if (isLoading){
-      <mat-spinner></mat-spinner>
-    }
+  <!-- Columna derecha: Lista de gatos -->
+  @if (isLoading) {
+  <div class="loading-container">
+    <p-progress-spinner ariaLabel="loading" />
+  </div>
+  }
 
-    <div id="container-card">
-      @for (cat of cats; track cat.id) {
-      <mat-card class="example-card" appearance="outlined">
-        <mat-card-header>
-          <mat-card-title-group>
-             @for (breed of cat.breeds; track breed.id){
-            <mat-card-title>{{ breed.name }}</mat-card-title>
-            <mat-card-subtitle>
-              <a [href]="breed.wikipedia_url" target="_blank"> Wikipedia</a>
-            </mat-card-subtitle>
-            }
-            <img
-              mat-card-lg-image
-              [src]="cat.url"
-              alt="Cat id : {{ cat.id }}"
-              height="250"
-              width="250"
-            />
-          </mat-card-title-group>
-        </mat-card-header>
-         @for (breed of cat.breeds; track breed.id){
-        <mat-card-content>
-          {{ breed.description }}
-        </mat-card-content>
-        }
-      </mat-card>
-      <br />
+  <div class="cats-container">
+    @for (cat of cats; track cat.id) {
+    <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+      <ng-template #header>
+        <img
+          [src]="cat.url"
+          alt="Cat id: {{ cat.id }}"
+          class="w-full h-64 object-cover"
+          width="400"
+          height="400"
+        />
+      </ng-template>
+      @for (breed of cat.breeds; track breed.id) {
+      <ng-template #title> {{ breed.name }} </ng-template>
+      <ng-template #subtitle>
+        <a
+          [href]="breed.wikipedia_url"
+          target="_blank"
+          class="text-blue-500 underline"
+        >
+          Wikipedia
+        </a>
+      </ng-template>
+      <p>{{ breed.description }}</p>
       }
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>
+    </p-card>
+    }
+  </div>
+</div>

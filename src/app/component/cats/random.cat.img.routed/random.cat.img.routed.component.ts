@@ -7,6 +7,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
+  FormsModule,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -14,9 +15,16 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { take } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+//PRIMENG
+import { SelectButton } from 'primeng/selectbutton';
+import { ButtonModule } from 'primeng/button';
+import { InputNumber } from 'primeng/inputnumber';
+import { Fluid } from 'primeng/fluid';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { CardModule } from 'primeng/card';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'app-random.cat.img.routed',
@@ -24,25 +32,34 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true,
   styleUrls: ['./random.cat.img.routed.component.css'],
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     ReactiveFormsModule,
-    RouterModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatCardModule,
-    MatButtonToggleModule,
-    MatProgressSpinnerModule,
+    FormsModule,
+    //PrimeNG
+    SelectButton,
+    ButtonModule,
+    InputNumber,
+    Fluid,
+    ProgressSpinner,
+    CardModule,
+    Message
   ],
 })
 export class RandomCatImgRoutedComponent implements OnInit {
+  //PrimeNG
+  stateOptions: any[] = [
+    { label: 'ASC', value: 'ASC' },
+    { label: 'DESC', value: 'DESC' },
+    { label: 'RAND', value: 'RAND' },
+  ];
+
+  value: string = 'off';
+  //
   cats: ICatImg[] = [];
 
   catForm: FormGroup = new FormGroup({});
 
   nPage: number = 0;
-  limit: number = 5;
+  limit: number = 10;
   order: string = 'RAND';
   tieneRaza: number = 0;
 
@@ -55,26 +72,20 @@ export class RandomCatImgRoutedComponent implements OnInit {
   ngOnInit() {
     this.catForm.markAllAsTouched();
   }
+
   createForm() {
     this.catForm = new FormGroup({
       limit: new FormControl(10, [
         Validators.required,
-        Validators.pattern('^(100|[1-9][0-9]?)$'),
+        Validators.min(1),
+        Validators.max(100),
+        Validators.pattern('^[0-9]+$'),
       ]),
     });
   }
 
-  changeOrder(order: string) {
-    this.order = order;
-  }
-
   changeSiRazas(tieneRaza: number) {
     this.tieneRaza = tieneRaza;
-  }
-
-  getRandomCats(limit: number) {
-    this.limit = limit;
-    this.getCat();
   }
 
   getCat() {
@@ -91,6 +102,7 @@ export class RandomCatImgRoutedComponent implements OnInit {
         },
         error: (error) => {
           console.log(error);
+          this.isLoading = false;
         },
       });
   }

@@ -64,7 +64,7 @@ describe('Pruebas randomCat', () => {
     let ids2: string[] = mockResponseSinInfoDESC.map((item) => item.id);
     let a2 = [...ids2].sort((a, b) => a.localeCompare(b)); // Copia del array antes de ordenar
     let b2 = [...ids2].sort((a, b) => b.localeCompare(a)); // Copia
-    
+
     console.log('hola');
   });
 
@@ -74,20 +74,9 @@ describe('Pruebas randomCat', () => {
     expect(tableComponent.limit).toBeDefined();
   });
 
-  it('Deberia actualizar orden', () => {
-    tableComponent.changeOrder('DESC');
-    expect(tableComponent.order).toBe('DESC');
-  });
-
   it('Deberia actualizar raza', () => {
     tableComponent.changeSiRazas(1);
     expect(tableComponent.tieneRaza).toBe(1);
-  });
-
-  it('Deberia actualizar limit', () => {
-    catServiceMock.getCatImg.and.returnValue(of([] as ICatImg[]));
-    tableComponent.getRandomCats(30);
-    expect(tableComponent.limit).toBe(30);
   });
 
   it('Prueba llamada a getCatImg', () => {
@@ -99,7 +88,12 @@ describe('Pruebas randomCat', () => {
 
     tableComponent.getCat();
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(
+      nPage,
+      tableComponent.limit,
+      tableComponent.order,
+      tableComponent.tieneRaza
+    );
   });
 
   it('Prueba getCat con ASC, 0, 10', () => {
@@ -111,11 +105,18 @@ describe('Pruebas randomCat', () => {
 
     catServiceMock.getCatImg.and.returnValue(of(mockResponse));
 
-    tableComponent.changeOrder(order);
+    tableComponent.order = order;
     tableComponent.changeSiRazas(tieneRaza);
-    tableComponent.getRandomCats(limit);
+    tableComponent.limit = limit;
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
+    tableComponent.getCat();
+
+     expect(catServiceMock.getCatImg).toHaveBeenCalledWith(
+      nPage,
+      limit,
+      order,
+      tieneRaza
+    );
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
@@ -137,11 +138,18 @@ describe('Pruebas randomCat', () => {
 
     catServiceMock.getCatImg.and.returnValue(of(mockResponse));
 
-    tableComponent.changeOrder(order);
+    tableComponent.order = order;
     tableComponent.changeSiRazas(tieneRaza);
-    tableComponent.getRandomCats(limit);
+    tableComponent.limit = limit;
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
+    tableComponent.getCat();
+
+     expect(catServiceMock.getCatImg).toHaveBeenCalledWith(
+      nPage,
+      limit,
+      order,
+      tieneRaza
+    );
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
@@ -163,11 +171,18 @@ describe('Pruebas randomCat', () => {
 
     catServiceMock.getCatImg.and.returnValue(of(mockResponse));
 
-    tableComponent.changeOrder(order);
+    tableComponent.order = order;
     tableComponent.changeSiRazas(tieneRaza);
-    tableComponent.getRandomCats(limit);
+    tableComponent.limit = limit;
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
+    tableComponent.getCat();
+
+    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(
+      nPage,
+      limit,
+      order,
+      tieneRaza
+    );
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
@@ -184,18 +199,27 @@ describe('Pruebas randomCat', () => {
     const mockResponse = mockResponseConInfoLimit1;
     catServiceMock.getCatImg.and.returnValue(of(mockResponse));
 
-    tableComponent.changeOrder(order);
+    tableComponent.order = order;
     tableComponent.changeSiRazas(tieneRaza);
-    tableComponent.getRandomCats(limit);
+    tableComponent.limit = limit;
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
+    tableComponent.getCat();
+
+     expect(catServiceMock.getCatImg).toHaveBeenCalledWith(
+      nPage,
+      limit,
+      order,
+      tieneRaza
+    );
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
     expect(tableComponent.cats.length).toBe(1);
     expect(tableComponent.cats[0].id).toBe(mockResponse[0].id);
     expect(tableComponent.cats[0].breeds!.length).toBe(1);
-    expect(tableComponent.cats[0].breeds![0].id).toEqual(mockResponse[0].breeds![0].id);
+    expect(tableComponent.cats[0].breeds![0].id).toEqual(
+      mockResponse[0].breeds![0].id
+    );
   });
 
   it('Prueba getCat con RAND, 0, 10', () => {
@@ -207,11 +231,18 @@ describe('Pruebas randomCat', () => {
 
     catServiceMock.getCatImg.and.returnValue(of(mockResponse));
 
-    tableComponent.changeOrder(order);
+    tableComponent.order = order;
     tableComponent.changeSiRazas(tieneRaza);
-    tableComponent.getRandomCats(limit);
+    tableComponent.limit = limit;
 
-    expect(catServiceMock.getCatImg).toHaveBeenCalledWith(nPage, tableComponent.limit, tableComponent.order, tableComponent.tieneRaza);
+    tableComponent.getCat();
+
+     expect(catServiceMock.getCatImg).toHaveBeenCalledWith(
+      nPage,
+      limit,
+      order,
+      tieneRaza
+    );
 
     expect(tableComponent.cats).toEqual(mockResponse);
 
@@ -224,7 +255,6 @@ describe('Pruebas randomCat', () => {
 
     expect(tableComponent.cats[0]).not.toBe(mockResponseSinInfoASC[0]);
     expect(tableComponent.cats[0]).not.toBe(mockResponseSinInfoDESC[0]);
-
 
     console.log('a');
   });

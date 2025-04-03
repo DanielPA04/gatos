@@ -1,63 +1,60 @@
-<header>
-  <div class="container">
-    <a
-      routerLink="/home"
-      [@rotateElement]="rotationState"
-      (click)="toggleRotation()"
-      ><h1>Gatos</h1></a
+<header class="sticky top-0 z-10 bg-[#d7e3ff]">
+  <div class="container mx-auto flex justify-between items-center p-4">
+    <!-- Logo con animación -->
+    <a 
+      routerLink="/home" 
+      [@rotateElement]="rotationState" 
+      (click)="toggleRotation()" 
+      class="text-2xl font-bold text-black hover:text-gray-400 transition"
     >
-    <div class="links">
-      <a
-        routerLink="/home"
-        [class.active]="rutaStr === '/home' || rutaStr === '/'"
-        >Home</a
-      >
+      Gatos
+    </a>
 
-      <button style="color: black" mat-button [matMenuTriggerFor]="menu">
+    <!-- Navegación -->
+    <nav class="flex items-center gap-6">
+      <a 
+        routerLink="/home" 
+        [class.active]="rutaStr === '/home' || rutaStr === '/'" 
+        class="hover:text-gray-500"
+      >
+        Home
+      </a>
+
+      <!-- Menú con Angular Material -->
+      <button mat-button [matMenuTriggerFor]="menu" class="text-black">
         Menu
       </button>
       <mat-menu #menu="matMenu">
-        <a
-          class="menu-item"
-          mat-menu-item
-          routerLink="/random"
+        <a 
+          class="menu-item" 
+          mat-menu-item 
+          routerLink="/random" 
           [class.active]="rutaStr.startsWith('/random')"
-          >Ir a random</a
         >
-        <a
-          class="menu-item"
-          mat-menu-item
-          routerLink="/breeds"
+          Ir a random
+        </a>
+        <a 
+          class="menu-item" 
+          mat-menu-item 
+          routerLink="/breeds" 
           [class.active]="rutaStr.startsWith('/breeds')"
-          >Ir a breeds</a
         >
+          Ir a breeds
+        </a>
       </mat-menu>
-      <a routerLink="/pi" [class.active]="rutaStr.startsWith('/pi')">PI</a>
-    </div>
-    <a
-      style="margin-right: 40px"
-      href="https://www.amazon.es"
-      target="_blank"
-      matTooltip="Amazon"
-    >
+
+      <a 
+        routerLink="/pi" 
+        [class.active]="rutaStr.startsWith('/pi')" 
+        class="hover:text-gray-500"
+      >
+        PI
+      </a>
+    </nav>
+
+    <!-- Enlace a Amazon -->
+    <a href="https://www.amazon.es" target="_blank" class="text-2xl text-black hover:text-gray-500">
       <i class="bi bi-amazon"></i>
     </a>
   </div>
 </header>
-
-<!--
-    <div>
-        <mat-sidenav-container class="example-container">
-          <mat-sidenav #sidenav mode="over" [(opened)]="opened">
-            Sidenav content
-          </mat-sidenav>
-    
-          <mat-sidenav-content>
-            <p>
-              <button mat-button (click)="sidenav.toggle()">
-                <mat-icon>menu</mat-icon>
-              </button>
-            </p>
-          </mat-sidenav-content>
-        </mat-sidenav-container>
-      </div>-->
